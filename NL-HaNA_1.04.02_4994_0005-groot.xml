@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
     <Metadata>
-        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.7.0:model_id=50786:lm=none:date=05_01_2024_16:16</Creator>
-        <Created>2024-01-05T16:10:11.930+01:00</Created>
-        <LastChange>2024-01-05T16:16:11.833+01:00</LastChange>
-        <TranskribusMetadata docId="1734102" pageId="63119711" pageNr="1" tsid="144459216" status="NEW" userId="207775" imgUrl="https://files.transkribus.eu/Get?id=ELZSCUINMGPZXPAEJIQCOPYN&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=KQQSFKIRVLRUOEWQTSKIJEKO" imageId="51030228"/>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.12.1:model_id=50786:lm=none:date=09_04_2024_14:17</Creator>
+        <Created>2024-04-09T04:52:05.954+02:00</Created>
+        <LastChange>2024-04-09T14:17:10.678+02:00</LastChange>
+        <TranskribusMetadata docId="1734102" pageId="67970964" pageNr="3" tsid="157455594" status="NEW" userId="207775" imgUrl="https://files.transkribus.eu/Get?id=SPYAOQOLSZJTSNIVEJTGHBCZ&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=GSTDGAVQFXAFHNOEENMQGMHI" imageId="54251094"/>
     </Metadata>
-    <Page imageFilename="63119711.jpg" imageWidth="2659" imageHeight="4000">
+    <Page imageFilename="67970964.jpg" imageWidth="2659" imageHeight="4000">
         <ReadingOrder>
-            <OrderedGroup id="ro_1704467771834" caption="Regions reading order">
+            <OrderedGroup id="ro_1712665030679" caption="Regions reading order">
                 <RegionRefIndexed index="0" regionRef="tr_1"/>
             </OrderedGroup>
         </ReadingOrder>
@@ -70,8 +70,8 @@
                 </TextEquiv>
             </TextLine>
             <TextLine id="tr_1_tl_2" custom="readingOrder {index:1;}">
-                <Coords points="386,369 804,353 995,422 1074,361 1281,353 2292,386 2289,295 1934,331 1777,289 1105,320 926,281 738,317 383,273"/>
-                <Baseline points="402,343 496,340 591,341 686,343 781,343 876,345 970,346 1065,344 1160,346 1255,346 1350,349 1444,349 1539,350 1634,352 1729,355 1824,358 1918,358 2013,361 2108,361 2203,360 2298,361"/>
+                <Coords points="386,369 680,353 992,419 1063,364 1378,350 2292,386 2289,292 2036,333 1320,284 493,309 383,273"/>
+                <Baseline points="402,343 496,340 591,341 686,343 781,343 876,345 970,346 1065,344 1160,346 1255,346 1350,349 1444,349 1539,350 1634,352 1729,355 1824,358 1918,358 2013,361 2108,361 2203,361 2298,361"/>
                 <Word id="tr_1_tl_2_w1" custom="readingOrder {index:0;}">
                     <Coords points="395,301 395,361 519,361 519,301"/>
                     <TextEquiv>
@@ -123,11 +123,11 @@
                 <Word id="tr_1_tl_2_w9" custom="readingOrder {index:8;}">
                     <Coords points="1879,321 1879,381 2279,381 2279,321"/>
                     <TextEquiv>
-                        <Unicode>verdrincken</Unicode>
+                        <Unicode>verckincken</Unicode>
                     </TextEquiv>
                 </Word>
                 <TextEquiv>
-                    <Unicode>ren na die mast gevaren ende aldaer laten verdrincken</Unicode>
+                    <Unicode>ren na die mast gevaren ende aldaer laten verckincken</Unicode>
                 </TextEquiv>
             </TextLine>
             <TextLine id="tr_1_tl_3" custom="readingOrder {index:2;}">
@@ -1824,58 +1824,58 @@
                 </TextEquiv>
             </TextLine>
             <TextLine id="tr_1_tl_28" custom="readingOrder {index:27;}">
-                <Coords points="369,2309 2559,2311 2559,2226 2383,2265 2116,2223 1964,2267 1579,2254 1460,2207 1058,2254 369,2229"/>
-                <Baseline points="385,2280 494,2275 603,2277 712,2277 821,2277 930,2281 1039,2285 1148,2283 1257,2280 1366,2277 1476,2278 1585,2283 1694,2286 1803,2287 1912,2292 2021,2292 2130,2289 2239,2291 2348,2292 2457,2293 2567,2295"/>
+                <Coords points="369,2309 493,2278 758,2320 1152,2289 1292,2336 1433,2281 2562,2311 2559,2226 1964,2267 1581,2256 1460,2207 1058,2254 984,2218 879,2254 369,2229"/>
+                <Baseline points="385,2280 494,2275 603,2277 712,2277 821,2277 930,2281 1039,2285 1148,2283 1257,2280 1366,2277 1476,2278 1585,2283 1694,2286 1803,2287 1912,2292 2021,2292 2130,2289 2239,2291 2348,2292 2457,2293 2567,2298"/>
                 <Word id="tr_1_tl_28_w1" custom="readingOrder {index:0;}">
                     <Coords points="371,2235 371,2295 635,2295 635,2235"/>
                     <TextEquiv>
-                        <Unicode>dactmen</Unicode>
+                        <Unicode>datmen</Unicode>
                     </TextEquiv>
                 </Word>
                 <Word id="tr_1_tl_28_w2" custom="readingOrder {index:1;}">
-                    <Coords points="670,2237 670,2297 746,2297 746,2237"/>
+                    <Coords points="670,2237 670,2297 745,2297 745,2237"/>
                     <TextEquiv>
                         <Unicode>des</Unicode>
                     </TextEquiv>
                 </Word>
                 <Word id="tr_1_tl_28_w3" custom="readingOrder {index:2;}">
-                    <Coords points="794,2242 794,2302 1164,2302 1164,2242"/>
+                    <Coords points="796,2242 796,2302 1166,2302 1166,2242"/>
                     <TextEquiv>
                         <Unicode>predicants</Unicode>
                     </TextEquiv>
                 </Word>
                 <Word id="tr_1_tl_28_w4" custom="readingOrder {index:3;}">
-                    <Coords points="1212,2237 1212,2297 1527,2297 1527,2237"/>
+                    <Coords points="1212,2237 1212,2297 1528,2297 1528,2237"/>
                     <TextEquiv>
                         <Unicode>huijsgesin</Unicode>
                     </TextEquiv>
                 </Word>
                 <Word id="tr_1_tl_28_w5" custom="readingOrder {index:4;}">
-                    <Coords points="1583,2244 1583,2304 1693,2304 1693,2244"/>
+                    <Coords points="1583,2244 1583,2304 1691,2304 1691,2244"/>
                     <TextEquiv>
                         <Unicode>wot</Unicode>
                     </TextEquiv>
                 </Word>
                 <Word id="tr_1_tl_28_w6" custom="readingOrder {index:5;}">
-                    <Coords points="1737,2250 1737,2310 2039,2310 2039,2250"/>
+                    <Coords points="1738,2250 1738,2310 2041,2310 2041,2250"/>
                     <TextEquiv>
                         <Unicode>genomen</Unicode>
                     </TextEquiv>
                 </Word>
                 <Word id="tr_1_tl_28_w7" custom="readingOrder {index:6;}">
-                    <Coords points="2091,2249 2091,2309 2171,2309 2171,2249"/>
+                    <Coords points="2092,2249 2092,2309 2175,2309 2175,2249"/>
                     <TextEquiv>
                         <Unicode>den</Unicode>
                     </TextEquiv>
                 </Word>
                 <Word id="tr_1_tl_28_w8" custom="readingOrder {index:7;}">
-                    <Coords points="2219,2252 2219,2312 2538,2312 2538,2252"/>
+                    <Coords points="2222,2252 2222,2312 2541,2312 2541,2252"/>
                     <TextEquiv>
                         <Unicode>predicant</Unicode>
                     </TextEquiv>
                 </Word>
                 <TextEquiv>
-                    <Unicode>dactmen des predicants huijsgesin wot genomen den predicant</Unicode>
+                    <Unicode>datmen des predicants huijsgesin wot genomen den predicant</Unicode>
                 </TextEquiv>
             </TextLine>
             <TextLine id="tr_1_tl_29" custom="readingOrder {index:28;}">

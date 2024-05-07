@@ -1,0 +1,7 @@
+de tekst tussen backticks is uit een VOC brief van de 1629 geschreven in het oud nederlands.
+Er kunnen schrijffouten instaan. Vertaal de tekst tussen drie backticks naar het Nederlands. 
+Er worden synoniemen gebruikt, bijvoorbeeld Jerommus, Jermmus Conteeles, Gerommus en Jeronius zijn 
+allemaal Jeronimus Cornelisz. Namen zijn meestal geschreven als voornaam achternaam beroep. het woord Item betekent een nieuw punt, nieuwe aanklacht of nieuwe paragraaf.
+Er staan geen punten tussen de zinnen, die mag je toevoegen. Het schip heet de Batavia.
+
+geef de vertaling zonder backticks of quotes.

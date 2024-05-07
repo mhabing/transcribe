@@ -1,0 +1,19 @@
+html body { font-family: Arial }
+.transcriptie { 
+    background-color: silver; font-style: italic;
+    color: rgb(120,110,93);
+    width: 50%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+.origineel { 
+    background-color: rgb(214,200,186); font-style: italic; 
+    color: rgb(120,110,93);
+    width: 50%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    border: 1px solid black;
+}

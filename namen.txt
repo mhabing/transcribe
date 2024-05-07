@@ -1,0 +1,8 @@
+de tekst tussen backticks is uit een VOC verslag van de 1629. Er kunnen
+schrijffouten in de tekst zitten. Er worden synoniemen gebruikt, bijvoorbeeld Jerommus, Jermmus Conteeles, Gerommus en Jeronius zijn 
+allemaal Jeronimus Cornelisz. Namen zijn meestal geschreven als voornaam achternaam beroep. 
+het woord Item betekent een nieuwe aanklacht. 
+
+Maak een lijst met namen gevogld door beroep op deze manier:
+<name>Jeronimus Cornelisz</name><beroep>Coopman<beroep>
+<name>Fransisco Pelsaert</name><beroep>kapitein</beroep>
