@@ -1,0 +1,132 @@
+#!/usr/bin/env python3
+"""Write the chronological table of Batavia/Pelsaert pieces to a CSV.
+
+What it does
+    Emits corpus/batavia_stukken.csv: one row per piece (or run of scans) in the
+    Nationaal Archief VOC archive (1.04.02) related to the wreck of the Batavia
+    (1629) and commander Francisco Pelsaert.
+
+Decisions embedded
+    - Dates are those of the piece itself, not of the volume it is bound in.
+      The volume date is kept in a separate column for comparison.
+    - `zekerheid`: gelezen  = date read on the page (HTR text),
+                   afgeleid = derived from content,
+                   volume   = only the catalogue/volume date is known.
+    - `htr`: Loghi = GLOBALISE v2 (CC0); NA = zenodo 21087; geen = no HTR.
+    - 1112/798 is deliberately absent: the "pelsaert" there is Barent Pessaert.
+    - Data was compiled from the archief MCP (get_unit, get_transcript,
+      search_transcripts) on 2026-11-23; rows are hand-curated, not scraped.
+
+Usage
+    python scripts/build_batavia_table.py [--out corpus/batavia_stukken.csv]
+
+Output
+    UTF-8 CSV with header, sorted by `sort_key` (document date, ISO-ish).
+"""
+
+import argparse
+import csv
+from pathlib import Path
+
+COLUMNS = [
+    "nr", "sort_key", "datum_stuk", "zekerheid", "inv", "volume_datum",
+    "scans", "gelezen", "onderwerp", "htr", "in_dash",
+]
+
+# Is the subject (not necessarily this exact document) treated in Mike Dash,
+# Batavia's Graveyard? Checked by full-text search in the EPUB index
+# (scripts/search_epub.py), 2026-11-23. Dash often cites printed editions
+# (DB = Drake-Brockman, R = Roeper), so "ja" does not mean he saw the original.
+# Values: ja | waarschijnlijk | onzeker | nee | niet gecontroleerd  + note.
+IN_DASH = {
+    "1626-01": "onzeker - Agra-periode (indigo, geldlenen, hof Jahangir) wel behandeld (c02 p.61-70); remonstrantie niet als bron gezien",
+    "1628-01": "ja - cameo van Boudaen (c05 p.165; noot notb p.406); de kopieen in 1102 niet specifiek geciteerd",
+    "1629-07-15": "ja - opdracht van Coen aan Pelsaert, Sardam vertrekt 15 juli (c06 p.196, 200)",
+    "1629-08-17": "niet gecontroleerd",
+    "1629-09-13": "ja - verhoor en vonnis via JFP (19-28 sep 1629), niet via deze kopie",
+    "1629-09-20": "ja - het proces via JFP [DB], niet via deze kopie",
+    "1629-09-30": "nee - 4994 (oud nr. 12232F) niet geciteerd; inhoud wel via JFP en 'VOC 1011' (= nu 1099)",
+    "1640-01": "nee - niet gevonden",
+    "1629-12-10": "onzeker - brieven van 11 en 15 dec 1629 geciteerd (VOC 1009 = nu 1097); precieze brief niet vastgesteld",
+    "1629-12-15": "ja - letterlijk: 'ARA VOC 1098, fol. 582r [R 220]'",
+    "1630-02-15": "ja - Pelsaert voor de Raad van Indie eind jan 1630 (c09 p.271); vonnissen 28 jan 1630 'VOC 1099, fol. 49'",
+    "1630-05-01": "ja - Jambi-expeditie (c09 p.272; noot notb p.407)",
+    "1630-05-11": "ja - Jambi-expeditie; deze resolutie niet specifiek geciteerd",
+    "1630-08-24": "nee - 'Nuyts' komt niet voor",
+    "1630-09-13": "ja - bagage na zijn dood doorzocht, privehandel (c09 p.273); stuk zelf niet geciteerd",
+    "1630-11-01": "ja - schipper Jacobsz nog gevangen, tortuur (c09 p.282; Van Diemen 5 juni 1631). Datering van dit stuk mogelijk 1631, nog nagaan",
+    "1630-12-31": "nee - niet gevonden",
+    "1631-06-01": "onzeker - fiscaal Van den Heuvel en ondervragingen genoemd (c09 p.281, notb p.387-388); verweerschrift niet",
+    "1634-12-05": "nee - niet gevonden",
+    "1637-01-01": "waarschijnlijk - 'delict' lijkt het indigo-geldlenen van Pelsaert (c02 p.64; noot nota p.344 #194); niet als bron geciteerd",
+}
+
+# sort_key, datum_stuk, zekerheid, inv, volume_datum, scans, gelezen, onderwerp, htr
+ROWS = [
+    ("1626-01", "1626-27", "volume", "4906", "1626-1627", "alle", "nee",
+     "Remonstrantie van Pelsaert over de VOC-handel in Hindustan (Agra)", "geen"),
+    ("1628-01", "ca. 1627-28 (kopieen in bundel van na 5 nov. 1630)", "afgeleid", "1102", "1631-1632",
+     "415, 445, 446", "ja (415, 445)",
+     "Juwelen van Boudaen en Reael: accoord, memorie voor Pelsaert, cognossement Philips Lucasz (schip Amboina)", "Loghi"),
+    ("1629-07-15", "1629-07-15", "gelezen", "1097", "1628-1629", "418, 420", "ja",
+     "Opdracht aan Pelsaert, commandant jacht Sardam, voor redding Batavia-overlevenden (420 draagt de datum, 418 gaat eraan vooraf)", "Loghi"),
+    ("1629-08-17", "1629-08-17", "gelezen", "1097", "1628-1629", "574", "ja",
+     "Akte op schip Hollandia (nieuwe proost); Specx-deel; Pelsaert alleen genoemd", "Loghi"),
+    ("1629-09-13", "1629-09-13 (HTR-lezing; controleren op beeld)", "gelezen", "1098", "1629 juni-okt.", "585", "ja",
+     "Verhoor en vonnis Jeronimus Cornelisz door Pelsaert en scheepsraad (Sardam)", "Loghi"),
+    ("1629-09-20", "ca. 1629-09/10", "afgeleid", "1098", "1629 juni-okt.", "607, 622, 625, 633, 643, 654", "ja (607, 654)",
+     "Proces: moorden 3 juli-5 aug. 1629 (Rutger Fredricx, Coenraat van Huijssen e.a.)", "Loghi"),
+    ("1629-09-30", "1629", "volume", "4994", "1629", "alle", "nee",
+     "Doodvonnissen door Pelsaert en raad van de Sardam", "geen"),
+    ("1640-01", "ca. 1639-41 (lijst; bevat een rekening gesloten 1629-11-29)", "afgeleid", "1135", "1642", "239-243", "ja (239-243)",
+     "Lijst van saldi van loonrekeningen 1627-1639, totaal 4829 gld; scan 242 bevat het saldo van korporaal Melchior (Batavia), gesloten 29 nov. 1629, ondertekend door Pelsaert", "Loghi"),
+    ("1629-12-10", "1629-12 (na 10 dec.)", "afgeleid", "1097", "1630 QQ", "1139", "ja",
+     "Brief Batavia: terugkeer Sardam met 74 zielen, contanten en juwelenkistje; Boudaen-juweel gered; Pelsaerts journalen als bijlage", "Loghi"),
+    ("1629-12-15", "1629-12 tot 1630", "afgeleid", "1098", "1630 QQ", "1343", "ja",
+     "Telling van de 303 opvarenden en hun lot", "Loghi"),
+    ("1630-02-15", "ca. 1630-02/04 (na 28 jan.)", "afgeleid", "1099", "1629-1631", "142, 143, 150, 152", "ja (142, 150)",
+     "Raad van Indie: Pelsaert (president) in revisie-commissie Block; brief Heren XVII", "Loghi"),
+    ("1630-05-01", "na 1630-04-30", "afgeleid", "1099", "1629-1631", "93, 165", "ja (93)",
+     "Jambi-expeditie onder Vlack, Pelsaert vice-commandeur", "Loghi"),
+    ("1630-05-11", "1630-05-11", "gelezen", "1099", "1629-1631", "494, 495, 496", "ja (494)",
+     "Raadsvergadering op jacht Texel voor Jambi", "Loghi"),
+    ("1630-08-24", "1630-08-24", "gelezen", "1099", "1629-1631", "729", "ja",
+     "Aangehaalde brief ondertekend Pr. Nuydts; Pelsaert genoemd", "Loghi"),
+    ("1630-09-13", "1630-09-13", "gelezen", "1099", "1629-1631", "203", "ja",
+     "Resolutie: na overlijden Pelsaert juweeltjes (Dobbelworst) en Mogolse tronie (Baudaen) in nalatenschap, naar Heren XVII", "Loghi"),
+    ("1630-11-01", "ca. 1630-10/12 (na overlijden)", "afgeleid", "1099", "1631 RR", "1049", "ja",
+     "Brief aan Heren XVII: Pelsaert overleden in Batavia; proces schipper Jacobsz", "Loghi"),
+    ("1630-12-31", "ongedateerd, wellicht 1630", "volume", "1104", "1631-1633", "925", "ja",
+     "Lijst veroordeelden en hun geconfisqueerde maandgelden", "Loghi"),
+    ("1631-06-01", "ca. mid-1631", "afgeleid", "1103", "1632 SS", "1137", "ja",
+     "Verweerschrift van een gevangene tegen de Raad van Justitie; Pelsaert genoemd (schrijver onbekend)", "Loghi"),
+    ("1634-12-05", "1634-35", "volume", "1116", "1634-1635", "158", "nee",
+     "Lijst van VOC-residenten in Agra, o.a. Pelsaert", "Loghi"),
+    ("1637-01-01", "1637", "volume", "1121", "1637", "572, 579, 580", "ja (579)",
+     "Brief over een delict van Pelsaert", "Loghi"),
+]
+
+
+def build_rows():
+    """Yield dict rows in chronological order, numbered from 1."""
+    for nr, row in enumerate(sorted(ROWS, key=lambda r: r[0]), start=1):
+        d = dict(zip(COLUMNS[:-1], (nr, *row)))
+        d["in_dash"] = IN_DASH.get(row[0], "niet gecontroleerd")
+        yield d
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--out", type=Path, default=Path("corpus/batavia_stukken.csv"))
+    args = parser.parse_args()
+
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    with args.out.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=COLUMNS)
+        writer.writeheader()
+        writer.writerows(build_rows())
+    print(f"wrote {args.out}")
+
+
+if __name__ == "__main__":
+    main()
